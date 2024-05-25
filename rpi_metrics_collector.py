@@ -42,4 +42,4 @@ while True:
 
     # Commit the changes and sleep for a while before collecting the next set of metrics
     conn.commit()
-    sleep(60)
+    sleep(300)
