@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rpi-metrics-collector-deployment
+  namespace: rpi-metrics
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: rpi-metrics-collector
+  template:
+    metadata:
+      labels:
+        app: rpi-metrics-collector
+    spec:
+      containers:
+      - name: rpi-metrics-collector
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        volumeMounts:
+        - name: sysfs
+          mountPath: /sys/class/thermal/thermal_zone0/temp
+        - name: rpi-metrics
+          mountPath: /rpi_metrics
+      volumes:
+      - name: sysfs
+        hostPath:
+          path: /sys/class/thermal/thermal_zone0/temp
+      - name: rpi-metrics
+        persistentVolumeClaim:
+          claimName: rpi-metrics-pvc
+

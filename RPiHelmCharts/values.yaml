@@ -1,0 +1,16 @@
+replicaCount: 3
+
+image:
+  repository: my-registry/rpi-metrics-collector
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+
