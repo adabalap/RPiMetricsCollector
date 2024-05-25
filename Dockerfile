@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY . /app
 
-RUN pip install --no-cache-dir psutil
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Add the sysfs path as a volume
 VOLUME /sys/class/thermal/thermal_zone0/temp
@@ -15,4 +15,3 @@ VOLUME /sys/class/thermal/thermal_zone0/temp
 VOLUME /rpi_metrics
 
 CMD [ "python", "./rpi_metrics_collector.py" ]
-
