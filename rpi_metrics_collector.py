@@ -27,7 +27,7 @@ c.execute('''
 while True:
     # Collect metrics
     timestamp = datetime.datetime.now()
-    hostname = socket.gethostname()
+    hostname = os.getenv('HOSTNAME', 'unknown')
     cpu_usage = psutil.cpu_percent()
     memory_usage = psutil.virtual_memory().percent
 
