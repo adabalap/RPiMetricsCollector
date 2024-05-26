@@ -5,6 +5,7 @@ import sqlite3
 import psutil
 import socket
 from time import sleep
+import datetime
 
 # Create a new SQLite database (or connect to an existing one)
 # in the rpi_metrics directory
