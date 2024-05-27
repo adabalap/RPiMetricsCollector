@@ -1,16 +1,22 @@
-# rpi_metrics_collector.py
-
 import os
-import sqlite3
+import mysql.connector
 import psutil
-import socket
 from time import sleep
 import datetime
 
-# Create a new SQLite database (or connect to an existing one)
-# in the rpi_metrics directory
-db_path = '/rpi_metrics/metrics.db'
-conn = sqlite3.connect(db_path)
+# Get environment variables
+db_host = os.getenv('DB_HOST', 'localhost')
+db_user = os.getenv('DB_USER', 'root')
+db_password = os.getenv('DB_PASSWORD', '')
+db_name = os.getenv('DB_NAME', 'rpi_metrics')
+
+# Create a new MariaDB connection
+conn = mysql.connector.connect(
+    host=db_host,
+    user=db_user,
+    password=db_password,
+    database=db_name
+)
 c = conn.cursor()
 
 # Create a table for your metrics
@@ -38,7 +44,7 @@ while True:
 
     # Store metrics in the database
     c.execute('''
-        INSERT INTO rpi_metrics VALUES (?, ?, ?, ?, ?)
+        INSERT INTO rpi_metrics VALUES (%s, %s, %s, %s, %s)
     ''', (timestamp, hostname, cpu_usage, memory_usage, temperature))
 
     # Commit the changes and sleep for a while before collecting the next set of metrics
